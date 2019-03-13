@@ -24,6 +24,15 @@ func decodeVersionConstraint(attr *hcl.Attribute) (VersionConstraint, hcl.Diagno
 	}
 
 	val, diags := attr.Expr.Value(nil)
+	if !val.IsWhollyKnown() {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  "Invalid version constraint",
+			Detail:   fmt.Sprintf("A string value is required for %s.", attr.Name),
+			Subject:  attr.Expr.Range().Ptr(),
+		})
+		return ret, diags
+	}
 	var err error
 	val, err = convert.Convert(val, cty.String)
 	if err != nil {
