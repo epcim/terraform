@@ -148,6 +148,14 @@ func (s *Schema) coreConfigSchemaBlock() *configschema.NestedBlock {
 	ret.MinItems = s.MinItems
 	ret.MaxItems = s.MaxItems
 
+	if s.AsSingle {
+		// In AsSingle mode, we artifically force a TypeList or TypeSet
+		// attribute in the SDK to be treated as a single block by Terraform Core.
+		// This must then be fixed up in the shim code (in helper/plugin) so
+		// that the SDK still sees the lists or sets it's expecting.
+		ret.Nesting = configschema.NestingSingle
+	}
+
 	if s.Required && s.MinItems == 0 {
 		// configschema doesn't have a "required" representation for nested
 		// blocks, but we can fake it by requiring at least one item.
@@ -207,6 +215,13 @@ func (s *Schema) coreConfigSchemaType() cty.Type {
 			// Some pre-existing schemas assume string as default, so we need
 			// to be compatible with them.
 			elemType = cty.String
+		}
+		if s.AsSingle {
+			// In AsSingle mode, we artifically force a TypeList or TypeSet
+			// attribute in the SDK to be treated as a single value by Terraform Core.
+			// This must then be fixed up in the shim code (in helper/plugin) so
+			// that the SDK still sees the lists or sets it's expecting.
+			return elemType
 		}
 		switch s.Type {
 		case TypeList:
