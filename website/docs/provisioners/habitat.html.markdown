@@ -54,6 +54,7 @@ There are 2 configuration levels, `supervisor` and `service`.  Configuration pla
 * `permanent_peer (bool)` - (Optional) Marks this supervisor as a permanent peer.  (Defaults to false)
 * `listen_gossip (string)` - (Optional) The listen address for the gossip system (Defaults to 0.0.0.0:9638)
 * `listen_http (string)` - (Optional) The listen address for the HTTP gateway (Defaults to 0.0.0.0:9631)
+* `listen_ctl (string)` - (Optional) The listen address for the CTL gateway (Defaults to 127.0.0.1:9632)
 * `ring_key (string)` - (Optional) The name of the ring key for encrypting gossip ring communication (Defaults to no encryption)
 * `ring_key_content (string)` - (Optional) The key content.  Only needed if using ring encryption and want the provisioner to take care of uploading and importing it.  Easiest to source from a file (eg `ring_key_content = "${file("conf/foo-123456789.sym.key")}"`) (Defaults to none)
 * `url (string)` - (Optional) The URL of a Builder service to download packages and receive updates from.  (Defaults to https://bldr.habitat.sh)

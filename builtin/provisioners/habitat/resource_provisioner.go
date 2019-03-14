@@ -46,6 +46,7 @@ type provisioner struct {
 	PermanentPeer    bool
 	ListenGossip     string
 	ListenHTTP       string
+	ListenCTL        string
 	Peer             string
 	RingKey          string
 	RingKeyContent   string
@@ -358,6 +359,7 @@ func decodeConfig(d *schema.ResourceData) (*provisioner, error) {
 		PermanentPeer:    d.Get("permanent_peer").(bool),
 		ListenGossip:     d.Get("listen_gossip").(string),
 		ListenHTTP:       d.Get("listen_http").(string),
+		ListenCTL:        d.Get("listen_ctl").(string),
 		URL:              d.Get("url").(string),
 		Channel:          d.Get("channel").(string),
 		Events:           d.Get("events").(string),
@@ -499,6 +501,10 @@ func (p *provisioner) startHab(o terraform.UIOutput, comm communicator.Communica
 
 	if p.ListenHTTP != "" {
 		options += fmt.Sprintf(" --listen-http %s", p.ListenHTTP)
+	}
+
+	if p.ListenCTL != "" {
+		options += fmt.Sprintf(" --listen-ctl %s", p.ListenCTL)
 	}
 
 	if p.Peer != "" {

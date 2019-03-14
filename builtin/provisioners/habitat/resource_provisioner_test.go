@@ -23,6 +23,7 @@ func TestResourceProvisioner_Validate_good(t *testing.T) {
 		"peer":         "1.2.3.4",
 		"version":      "0.32.0",
 		"service_type": "systemd",
+		"listen_ctl":   "0.0.0.0:9632",
 	})
 
 	warn, errs := Provisioner().Validate(c)
